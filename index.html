@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello, World!</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+      <h1 class="title">Hello World!</h1>
+      <p id="currentTime"></p>
+      <script src="script.js"></script>
+  </body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 26th Birthday Dilaxshini</title>
+
+<style>
+    body {
+        margin:0;
+        padding:0;
+        overflow-x:hidden;
+        font-family: Poppins, sans-serif;
+        background:#ffccdd;
+        text-align:center;
+        color:#fff;
+    }
+    .container {
+        padding-top:80px;
+        position:relative;
+        z-index:2;
+    }
+    h1 { font-size:34px; font-weight:700; margin:10px 0; }
+    h2 { font-size:20px; font-weight:400; margin:5px 0; }
+    #countdown { font-size:22px; margin-top:20px; font-weight:600; }
+    .share-box { margin-top:25px; }
+    .btn {
+        display:inline-block;
+        margin:6px;
+        padding:12px 20px;
+        background:white;
+        color:#ff4da6;
+        text-decoration:none;
+        border-radius:30px;
+        font-weight:600;
+    }
+    footer {
+        margin-top:50px;
+        padding:20px;
+        color:#fff;
+        opacity:0.8;
+        font-size:14px;
+    }
+    canvas {
+        position:fixed;
+        top:0;left:0;
+        width:100%;height:100%;
+        pointer-events:none;
+        z-index:1;
+    }
+    .heart {
+        position:fixed;
+        top:-10px;
+        font-size:18px;
+        color:#ff3366;
+        animation:heartFall 4s linear infinite;
+        z-index:3;
+    }
+    @keyframes heartFall {
+        0% { transform:translateY(-10px) rotate(0deg); opacity:1; }
+        100% { transform:translateY(110vh) rotate(360deg); opacity:0; }
+    }
+    .balloon {
+        position:fixed;
+        bottom:-150px;
+        width:50px;
+        height:70px;
+        border-radius:50%;
+        background:#ff7ab8;
+        animation:floatUp 8s linear infinite;
+        z-index:3;
+    }
+    @keyframes floatUp {
+        0% { transform:translateY(0); opacity:1; }
+        100% { transform:translateY(-120vh); opacity:0; }
+    }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+<canvas id="fireworks"></canvas>
+
+<audio id="bgmusic" autoplay loop>
+  <source src="happy-birthday-357371.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <h1>Happy 26th Birthday</h1>
+    <h1>Dilaxshini</h1>
+    <h2>Wishing you joy, love, and endless happiness</h2>
+
+    <div id="countdown">Loading countdown...</div>
+
+    <div class="share-box">
+        <a class="btn" href="https://wa.me/?text=Happy%2026th%20Birthday%20Dilaxshini" target="_blank">Share on WhatsApp</a>
+        <a class="btn" href="https://www.instagram.com/" target="_blank">Open Instagram</a>
+    </div>
+</div>
+
+<footer>With Best Wishes</footer>
+
+<script>
+/* COUNTDOWN TIMER */
+const target = new Date("2026-01-09T00:00:00").getTime();
+setInterval(function(){
+    const now = new Date().getTime();
+    const diff = target - now;
+    if(diff <= 0){
+        document.getElementById("countdown").innerHTML = "Happy Birthday Day!";
+        return;
+    }
+    const d = Math.floor(diff/(1000*60*60*24));
+    const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const m = Math.floor((diff%(1000*60*60))/(1000*60));
+    const s = Math.floor((diff%(1000*60))/1000);
+    document.getElementById("countdown").innerHTML = d+"d "+h+"h "+m+"m "+s+"s";
+},1000);
+
+/* HEARTS */
+setInterval(()=>{
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(16+Math.random()*14)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),4000);
+},300);
+
+/* BALLOONS */
+setInterval(()=>{
+    const b=document.createElement("div");
+    b.className="balloon";
+    b.style.left=Math.random()*100+"vw";
+    b.style.background=["#ff7ab8","#ff99cc","#ff4da6","#ffb3d9"][Math.floor(Math.random()*4)];
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),8000);
+},800);
+
+/* CONFETTI */
+const confettiCanvas=document.getElementById('confetti');
+const ctx1=confettiCanvas.getContext('2d');
+let confettiPieces=[];
+function resize(){confettiCanvas.width=window.innerWidth;confettiCanvas.height=window.innerHeight;}
+window.addEventListener('resize',resize);
+resize();
+function confetti(){
+    ctx1.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+    confettiPieces.forEach((p,i)=>{
+        p.y+=p.speed;
+        if(p.y>confettiCanvas.height) p.y=0;
+        ctx1.fillStyle=p.color;
+        ctx1.fillRect(p.x,p.y,p.size,p.size);
+    });
+    requestAnimationFrame(confetti);
+}
+for(let i=0;i<150;i++){
+    confettiPieces.push({
+        x:Math.random()*confettiCanvas.width,
+        y:Math.random()*confettiCanvas.height,
+        size:5+Math.random()*5,
+        speed:1+Math.random()*3,
+        color:`hsl(${Math.random()*360},80%,60%)`
+    });
+}
+confetti();
+
+/* FIREWORKS */
+const fwCanvas=document.getElementById('fireworks');
+const ctx2=fwCanvas.getContext('2d');
+fwCanvas.width=innerWidth; fwCanvas.height=innerHeight;
+window.addEventListener('resize',()=>{
+    fwCanvas.width=innerWidth; fwCanvas.height=innerHeight;
+});
+function random(min,max){return Math.random()*(max-min)+min;}
+class Firework{
+    constructor(){
+        this.x=random(100,fwCanvas.width-100);
+        this.y=fwCanvas.height;
+        this.targetY=random(100,fwCanvas.height/2);
+        this.color=`hsl(${random(0,360)},100%,60%)`;
+        this.exploded=false;
+        this.particles=[];
+    }
+    update(){
+        if(!this.exploded){
+            this.y-=4;
+            if(this.y<=this.targetY) this.explode();
+        } else {
+            this.particles.forEach(p=>p.update());
+        }
+    }
+    explode(){
+        this.exploded=true;
+        for(let i=0;i<40;i++){
+            this.particles.push(new Particle(this.x,this.y,this.color));
+        }
+    }
+    draw(){
+        if(!this.exploded){
+            ctx2.fillStyle=this.color;
+            ctx2.fillRect(this.x,this.y,3,3);
+        } else {
+            this.particles.forEach(p=>p.draw());
+        }
+    }
+}
+class Particle{
+    constructor(x,y,color){
+        this.x=x; this.y=y;
+        this.color=color;
+        this.speed=random(1,4);
+        this.angle=random(0,Math.PI*2);
+        this.opacity=1;
+    }
+    update(){
+        this.x+=Math.cos(this.angle)*this.speed;
+        this.y+=Math.sin(this.angle)*this.speed;
+        this.opacity-=0.02;
+    }
+    draw(){
+        ctx2.globalAlpha=this.opacity;
+        ctx2.fillStyle=this.color;
+        ctx2.fillRect(this.x,this.y,3,3);
+        ctx2.globalAlpha=1;
+    }
+}
+let fireworks=[];
+setInterval(()=>{fireworks.push(new Firework());},800);
+function animateFW(){
+    ctx2.fillStyle="rgba(0,0,0,0.15)";
+    ctx2.fillRect(0,0,fwCanvas.width,fwCanvas.height);
+    fireworks.forEach((fw,i)=>{
+        fw.update(); fw.draw();
+        if(fw.exploded && fw.particles.every(p=>p.opacity<=0)){
+            fireworks.splice(i,1);
+        }
+    });
+    requestAnimationFrame(animateFW);
+}
+animateFW();
+</script>
+
+</body>
+</html>
